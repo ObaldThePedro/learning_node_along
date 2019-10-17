@@ -1,0 +1,22 @@
+extends ../layouts/main-layout.pug
+
+block styles
+    link(rel="stylesheet", href="/css/product.css")
+    link(rel="stylesheet", href="/css/main.css")
+    
+
+
+block content
+    -let image = product.image
+    -let alt= product.title
+    -let id = product.id
+    main.centered
+        h1 #{product.title}
+        hr
+        img(src=image, alt=alt)
+        h2 #{product.price}£
+        p #{product.description}
+        include ../layouts/cart-form.pug
+
+
+
