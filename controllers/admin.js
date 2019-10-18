@@ -1,5 +1,5 @@
 const Product = require("../models/product");
-
+const Cart = require("../models/cart");
 exports.getAddProduct = (req, res, next) => {
   res.render("admin/edit-product", {
     pageTitle: "Add Product",
@@ -41,6 +41,13 @@ exports.postEditProduct = (req, res, next) => {
     updatedDescription,
     updatedPrice
   );
+  Cart.fetchCartProducts(cart => {
+    console.log(cart.products);
+    if (cart.products.length > 0) {
+      const cart_product = cart.products.find(p => p.id === prodId);
+      cart_product.price = updatedPrice;
+    }
+  });
   product.save();
   res.redirect("/");
 };

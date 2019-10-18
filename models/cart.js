@@ -53,11 +53,20 @@ module.exports = class Cart {
         const cart = JSON.parse(fileContent);
         const updatedCart = { ...cart };
         const product = updatedCart.products.find(prod => prod.id === id);
-        const productQty = product.quantity;
-        updatedCart.products = updatedCart.products.filter(
-          prod => prod.id !== id
-        );
-        updatedCart.totalPrice = updatedCart.totalPrice - price * productQty;
+        if (product.quantity > 1) {
+          product.quantity = product.quantity - 1;
+        } else {
+          updatedCart.products = updatedCart.products.filter(
+            prod => prod.id !== id
+          );
+        }
+        if (updatedCart.products.length === 0) {
+          updatedCart.totalPrice = 0;
+        } else {
+          updatedCart.totalPrice =
+            updatedCart.totalPrice - price * product.quantity;
+        }
+
         fs.writeFile(p, JSON.stringify(updatedCart), error => {
           console.log(error);
         });
@@ -65,7 +74,7 @@ module.exports = class Cart {
     });
   }
 
-  static fetchAll(cb) {
+  static fetchCartProducts(cb) {
     getProductsFromFile(cb);
   }
 };

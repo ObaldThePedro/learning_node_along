@@ -11,21 +11,13 @@ block content
         if prods.length > 0
             .grid
                 each product in prods
-                    - var image = product.image
-                    - var id = product.id
-                    article.card.product-item
-                        header.card__header
-                            h1.product__title #{product.title}
-                        .card__image
-                            img(src= image
-                                alt="A Book")
-                        .card__content
-                            h2.product__price #{product.price}
-                            p.product__description #{product.description}
-                        .card__actions
-                            a.btn(href="/product-details/" + id) Details
-                            include ../layouts/cart-form
-                            a.btn(href="/admin/edit-product/" + id) Edit
-                            
+                   ul
+                    li #{product.productData.title} (#{product.quantity})
+                    form.form-control(action="/cart/delete-item" method="POST")
+                        input(type="hidden" name="id" value=product.productData.id)
+                        button.btn(type="submit") Delete item
+                          
+
+            h3 Total Price: £#{totalPrice}              
         else
-            h1 No products found
+            h1 No products in cart
