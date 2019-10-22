@@ -55,9 +55,7 @@ exports.postDeleteCartItem = (req, res, next) => {
   console.log("hELLO");
   const prodId = req.body.id;
   const product = Product.findById(prodId, product => {
-    console.log(product);
-    const productPrice = product.price;
-    Cart.deleteProduct(prodId, productPrice);
+    Cart.deleteProduct(prodId, product.price);
   });
   res.redirect("/cart");
 };
