@@ -2,32 +2,33 @@ const Product = require("../models/product");
 const Cart = require("../models/cart");
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
-    .then(([rows, fieldData]) => {
-      console.log(rows);
-      res.render("shop/product-list", {
-        prods: rows,
+  Product.findAll().then(products => {
+    res
+      .render("shop/product-list", {
+        prods: products,
         pageTitle: "Shop",
         path: "/",
-        hasProducts: rows.length > 0,
+        hasProducts: products.length > 0,
         activeShop: true,
         productCSS: true
-      });
-    })
-    .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
+  });
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll()
-    .then(([rows, fieldData]) => {
-      res.render("shop/index", {
-        prods: rows,
-        pageTitle: "Index",
-        path: "/products",
-        hasProducts: rows.length > 0
-      });
-    })
-    .catch(err => console.log(err));
+  Product.findAll().then(products => {
+    res
+      .render("shop/index", {
+        prods: products,
+        pageTitle: "Shop",
+        path: "/",
+        hasProducts: products.length > 0,
+        activeShop: true,
+        productCSS: true
+      })
+      .catch(err => console.log(err));
+  });
 };
 
 exports.getCart = (req, res, next) => {
@@ -90,9 +91,21 @@ exports.getOrders = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.id;
-  Product.findById(prodId)
-    .then(([product]) => {
-      res.render("shop/product-details", { product: product[0] });
+  Product.findAll({
+    where: {
+      id: prodId
+    }
+  })
+    .then(products => {
+      res.render("shop/product-details", { product: products[0] });
     })
     .catch(error => console.log(error));
+  //alternative to find by ID, which can be simpler, however with findAll there is more control over the query.
+  // Product.findByPk(prodId)
+  //   .then(product => {
+  //     res.render("shop/product-details", { product: product });
+  //   })
+  //   .catch(error => {
+  //     console.log(error);
+  //   });
 };

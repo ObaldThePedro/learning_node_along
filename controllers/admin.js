@@ -16,6 +16,7 @@ exports.getEditProduct = (req, res, next) => {
     return res.redirect("/");
   }
   Product.findById(productId, product => {
+    console.log(product);
     if (!product) {
       return res.redirect("/");
     } else {
@@ -54,14 +55,20 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getAdminProducts = (req, res, next) => {
-  Product.fetchAll(products => {
-    res.render("admin/product-list", {
-      prods: products,
-      path: "/admin/products",
-      pageTitle: "Admin Products",
-      hasProducts: products.length > 0
+  Product.findAll()
+    .then(products => {
+      res.render("admin/product-list", {
+        prods: products,
+        pageTitle: "Shop",
+        path: "/",
+        hasProducts: products.length > 0,
+        activeShop: true,
+        productCSS: true
+      });
+    })
+    .catch(error => {
+      console.log(error);
     });
-  });
 };
 
 exports.postProduct = (req, res, next) => {
@@ -76,7 +83,7 @@ exports.postProduct = (req, res, next) => {
     price: price
   })
     .then(result => {
-      console.log(result);
+      console.log("Product created");
     })
     .catch(error => {
       console.log(error);
