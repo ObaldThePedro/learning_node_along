@@ -4,7 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const notFoundController = require("./controllers/pagenotfound");
 const app = express();
-const db = require("./util/database");
+const sequelize = require("./util/database");
 
 app.set("view engine", "pug");
 app.set("views", "views");
@@ -20,4 +20,11 @@ app.use(shopRoutes);
 
 app.use(notFoundController.notFound);
 
-app.listen(3000);
+sequelize
+  .sync()
+  .then(result => {
+    app.listen(1000);
+  })
+  .catch(error => {
+    console.log(error);
+  });

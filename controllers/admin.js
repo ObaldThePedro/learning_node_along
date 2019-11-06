@@ -65,19 +65,22 @@ exports.getAdminProducts = (req, res, next) => {
 };
 
 exports.postProduct = (req, res, next) => {
-  const product = new Product(
-    null,
-    req.body.title,
-    req.body.image,
-    req.body.description,
-    req.body.price
-  );
-  product
-    .save()
-    .then(() => {
-      res.redirect("/");
+  const title = req.body.title;
+  const image = req.body.image;
+  const description = req.body.description;
+  const price = req.body.price;
+  Product.create({
+    title: title,
+    image: image,
+    description: description,
+    price: price
+  })
+    .then(result => {
+      console.log(result);
     })
-    .catch(error => console.log(error));
+    .catch(error => {
+      console.log(error);
+    });
 };
 
 exports.postDeleteProduct = (req, res, next) => {
