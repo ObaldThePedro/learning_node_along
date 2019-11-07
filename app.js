@@ -23,7 +23,7 @@ app.use(notFoundController.notFound);
 sequelize
   .sync()
   .then(result => {
-    app.listen(2000);
+    app.listen(5000);
   })
   .catch(error => {
     console.log(error);
