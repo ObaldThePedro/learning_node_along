@@ -36,12 +36,14 @@ exports.postEditProduct = (req, res, next) => {
   const updatedImage = req.body.image;
   const updatedDescription = req.body.description;
   const updatedPrice = req.body.price;
+  const userId = req.user.id;
   Product.findByPk(prodId)
     .then(product => {
       product.title = updatedTitle;
       product.image = updatedImage;
       product.description = updatedDescription;
       product.price = updatedPrice;
+      product.userId = userId;
       return product.save();
     })
     .then(result => {
@@ -81,12 +83,13 @@ exports.postProduct = (req, res, next) => {
   const image = req.body.image;
   const description = req.body.description;
   const price = req.body.price;
-  Product.create({
-    title: title,
-    image: image,
-    description: description,
-    price: price
-  })
+  req.user
+    .createProduct({
+      title: title,
+      image: image,
+      description: description,
+      price: price
+    })
     .then(result => {
       console.log("Product created");
       res.redirect("/admin/products");
