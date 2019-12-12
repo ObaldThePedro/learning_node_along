@@ -16,8 +16,10 @@ block content
                     form.form-control(action="/cart/delete-item" method="POST")
                         input(type="hidden" name="id" value=product.id)
                         button.btn(type="submit") Delete item
-                          
-
+            hr
+            .centered
+                form(action="/createOrder" method="POST")
+                    button.btn(type="submit") Order now!
             h3 Total Price: £#{totalPrice}              
         else
             h1 No products in cart
