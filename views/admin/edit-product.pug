@@ -25,6 +25,6 @@ block content
                 input(type="number" name="price" id="price" value= editing ? product.price : null)
             
             if editing
-                <input type="hidden" value=#{product.id} name=id>
+                <input type="hidden" value=#{product._id} name=id>
 
             button.btn(type="submit") #{editing ? "Update Product" : "Add"}
