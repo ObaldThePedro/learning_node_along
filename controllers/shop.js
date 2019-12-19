@@ -58,33 +58,12 @@ exports.postDeleteCartItem = (req, res, next) => {
     .catch(error => console.log(error));
 };
 
-// exports.postOrder = (req, res, next) => {
-//   let fetchedCart;
-//   req.user
-//     .getCart()
-//     .then(cart => {
-//       fetchedCart = cart;
-//       cart.getProducts();
-//     })
-//     .then(products => {
-//       return req.user
-//         .createOrder()
-//         .then(order => {
-//           return order.addProducts(
-//             products.map(product => {
-//               product.orderItem = { quantity: product.cartItem.quantity };
-//               return product;
-//             })
-//           );
-//         })
-//         .catch(error => console.log(error));
-//     })
-//     .then(result => {
-//       return fetchedCart.setProducts(null);
-//     })
-//     .then(result => res.redirect("/orders"))
-//     .catch(error => console.log(error));
-// };
+exports.postOrder = (req, res, next) => {
+  req.user
+    .addOrder()
+    .then(result => res.redirect("/orders"))
+    .catch(error => console.log(error));
+};
 
 exports.postCart = (req, res, next) => {
   const prodId = req.body.productID;
@@ -103,19 +82,19 @@ exports.postCart = (req, res, next) => {
 //   });
 // };
 
-// exports.getOrders = (req, res, next) => {
-//   req.user
-//     .getOrders({ include: ["products"] })
-//     .then(orders => {
-//       console.log(orders);
-//       res.render("shop/orders", {
-//         path: "/orders",
-//         pageTitle: "Orders",
-//         orders: orders
-//       });
-//     })
-//     .catch(error => console.log(error));
-// };
+exports.getOrders = (req, res, next) => {
+  req.user
+    .getOrders()
+    .then(orders => {
+      console.log(orders);
+      res.render("shop/orders", {
+        path: "/orders",
+        pageTitle: "Orders",
+        orders: orders
+      });
+    })
+    .catch(error => console.log(error));
+};
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.id;

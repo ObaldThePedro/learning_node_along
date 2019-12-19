@@ -52,11 +52,27 @@ class Product {
 
   static deleteById(prodId) {
     const db = getDb();
+
+    db.collection("users")
+      .find()
+      .toArray()
+      .then(users =>
+        users.map(user => {
+          let updatedCart = user.cart.items.filter(
+            item => item.productId.toString() !== prodId.toString()
+          );
+          return db
+            .collection("users")
+            .updateOne(
+              { _id: mongoDb.ObjectId(user._id) },
+              { $set: { cart: { items: updatedCart } } }
+            );
+        })
+      );
+
     return db
       .collection("products")
-      .deleteOne({ _id: mongoDb.ObjectId(prodId) })
-      .then(result => console.log("Deleted"))
-      .catch(error => console.log(error));
+      .deleteOne({ _id: mongoDb.ObjectId(prodId) });
   }
 }
 module.exports = Product;

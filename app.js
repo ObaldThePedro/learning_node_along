@@ -12,7 +12,7 @@ app.set("view engine", "pug");
 app.set("views", "views");
 
 app.use((req, res, next) => {
-  User.findById("5dfac5f4812ad8056b23aa46")
+  User.findById("5dfbdb2f839254065f7c4e4d")
     .then(user => {
       req.user = new User(user.username, user.email, user.cart, user._id);
       next();
@@ -31,5 +31,5 @@ app.use(shopRoutes);
 
 app.use(notFoundController.notFound);
 MongoConnect(() => {
-  app.listen(3000);
+  app.listen(5000);
 });
