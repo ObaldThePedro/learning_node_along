@@ -13,10 +13,10 @@ block content
                 each order in orders
                     li
                         h1 #{order._id}
-                    if order.items.length > 0
+                    if order.products.length > 0
                         ul
-                            each item in order.items
-                                p #{item.title} #{item.quantity}
+                            each product in order.products
+                                p #{product.product.title} #{product.quantity}
 
                             
 

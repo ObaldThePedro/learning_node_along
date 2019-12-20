@@ -1,6 +1,7 @@
 const mongoDb = require("mongodb");
 
 const Product = require("../models/product");
+const User = require("../models/user");
 
 exports.getAddProduct = (req, res, next) => {
   res.render("admin/edit-product", {
@@ -98,8 +99,18 @@ exports.postProduct = (req, res, next) => {
 };
 
 exports.postDeleteProduct = (req, res, next) => {
+  let cart;
   const prodId = req.body.id;
-  Product.findByIdAndDelete(prodId)
+  User.find().then(users =>
+    users.map(user => {
+      cart = user.cart.items.filter(item => {
+        return item.productId.toString() !== prodId.toString();
+      });
+      user.cart.items = cart;
+      user.save();
+    })
+  );
+  return Product.findByIdAndDelete(prodId)
     .then(() => {
       res.redirect("/admin/products");
     })

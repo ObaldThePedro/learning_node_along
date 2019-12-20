@@ -12,9 +12,9 @@ block content
             .grid
                 each product in prods
                    ul
-                    li #{product.title} (#{product.quantity})
+                    li #{product.productId.title} (#{product.quantity})
                     form.form-control(action="/cart/delete-item" method="POST")
-                        input(type="hidden" name="id" value=product._id)
+                        input(type="hidden" name="id" value=product.productId._id)
                         button.btn(type="submit") Delete item
             hr
             .centered
